@@ -48,7 +48,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="{host}" />
-    <meta property="og:image" content="https://{host}/favicon.png" />
+<!--    <meta property="og:image" content="https://{host}/favicon.png" />-->
 </svelte:head>
 
 <div id="main" class="text-center text-white m-16 font-germania space-y-10 text-5xl">
