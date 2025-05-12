@@ -1,6 +1,7 @@
 
 <script lang="ts">
     import {Input} from "$lib/components/ui/input";
+    import {Separator} from "$lib/components/ui/separator";
 
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
@@ -91,4 +92,20 @@
             {/each}
         </div>
     </div>
+</div>
+
+<div class="flex w-screen">
+    <div class="basis-1/12"></div>
+    <div class="basis-10/12"><Separator /></div>
+    <div class="basis-1/12"></div>
+</div>
+
+<div class="flex w-screen">
+    <div class="basis-1/3"></div>
+    <div class="basis-1/3 p-4 text-center text-white font-germania text-xs">
+        Not officially associated with HannahHyrule
+        <br/>
+        Hosted by <a class="text-yellow-400" href="https://sigfalt.dev">sigfalt</a>
+    </div>
+    <div class="basis-1/3"></div>
 </div>
