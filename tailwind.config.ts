@@ -68,7 +68,8 @@ const config: Config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans],
-				germania: ['"Germania One"']
+				germania: ['"Germania One"'],
+				rowdies: ['"Rowdies"']
 			},
 			keyframes: {
 				"accordion-down": {

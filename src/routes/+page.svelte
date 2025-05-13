@@ -1,7 +1,7 @@
 
 <script lang="ts">
-    import {Input} from "$lib/components/ui/input";
     import {Separator} from "$lib/components/ui/separator";
+    import {Textarea} from "$lib/components/ui/textarea";
 
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
@@ -54,21 +54,22 @@
 <!--    <meta property="og:image" content="https://{host}/favicon.png" />-->
 </svelte:head>
 
-<div id="main" class="text-center text-white m-8 font-germania space-y-8">
-    <h2 class="text-4xl">Hannah TTS</h2>
+<div id="main" class="text-center text-white m-8 font-rowdies space-y-8">
+    <h2 class="text-4xl font-germania">Hannah TTS</h2>
 
     <div class="flex flex-row">
         <div class="basis-1/4"></div>
-        <div class="bg-purple-950 basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400">
+        <div class="bg-purple-950 basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
             Send a message with the appropriate amounts of bits, your selected voice, and then the message you want the voice to read out.
             <br/>
-            <Input disabled type="text" placeholder="Cheer100 [sol] I don't do moms. Moms do me. Because I'm a subby little bottom. Shy"></Input>
+            <Textarea disabled
+                      placeholder="Cheer100 [sol] I don't do moms. Moms do me. Because I'm a subby little bottom. Shy"/>
         </div>
         <div class="basis-1/4"></div>
     </div>
 
     <div class="bg-purple-950 p-2 rounded-xl border-2 border-yellow-400">
-        <h3 class="text-3xl">GIGA Money</h3>
+        <h3 class="text-3xl font-germania">GIGA Money</h3>
         <br/>
 
         <div class="grid grid-cols-3 grid-flow-row-dense gap-6">
@@ -82,7 +83,7 @@
     </div>
 
     <div class="bg-purple-950 p-2 rounded-xl border-2 border-yellow-400">
-        <h3 class="text-2xl">Standard Voices</h3>
+        <h3 class="text-2xl font-germania">Standard Voices</h3>
         <p class="text-lg">100 bits</p>
         <br/>
 
