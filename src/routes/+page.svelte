@@ -47,11 +47,17 @@
 
 <svelte:head>
     <title>{title}</title>
+
+    <link rel="icon" href="/favicon.ico" sizes="16x16">
+    <link rel="icon" href="/favicon-32x32.png" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <meta property="og:title" content="{title}" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="{host}" />
-<!--    <meta property="og:image" content="https://{host}/favicon.png" />-->
+    <meta property="og:image" content="https://{host}/favicon.png" />
 </svelte:head>
 
 <div id="main" class="text-center text-white m-8 font-rowdies space-y-8">
