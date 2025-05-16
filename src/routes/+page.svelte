@@ -110,9 +110,11 @@
 <div class="flex w-screen">
     <div class="basis-1/3"></div>
     <div class="basis-1/3 p-4 text-center text-white font-germania text-xs">
-        Not officially associated with HannahHyrule
+        Not officially associated with <a class="text-yellow-400" href="https://borpa.chat">HannahHyrule</a>
         <br/>
-        Hosted by <a class="text-yellow-400" href="https://sigfalt.dev">sigfalt</a>
+        Developed and hosted by <a class="text-yellow-400" href="https://sigfalt.dev">sigfalt</a>
+        <br/>
+        Source available on <a class="text-yellow-400" href="https://github.com/sigfalt/chat-borpa-tts">Github</a>
     </div>
     <div class="basis-1/3"></div>
 </div>
