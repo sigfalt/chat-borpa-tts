@@ -57,7 +57,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="{host}" />
-    <meta property="og:image" content="https://{host}/favicon.png" />
+    <meta property="og:image" content="https://{host}/favicon.ico" />
 </svelte:head>
 
 <div id="main" class="text-center text-white m-8 font-rowdies space-y-4">
