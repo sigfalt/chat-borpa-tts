@@ -2,47 +2,22 @@
 <script lang="ts">
     import {Separator} from "$lib/components/ui/separator";
     import {Textarea} from "$lib/components/ui/textarea";
+    import type {PageProps} from "./$types";
 
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
 
-    const deluxe_voices = [{
-        name: 'DeluxePirate',
-        price: 1000
-    }, {
-        name: 'GigaDeluxePirate',
-        price: 2000
-    }, {
-        name: 'GigaDeluxePirateOFHELL',
-        price: 2500
-    }];
+    let {data}: PageProps = $props();
 
-    const standard_voices = [
-        'Hiro',
-        'Sol',
-        'Hannah',
-        'Dagoth',
-        'Dracula',
-        'Goblin',
-        'Ranni',
-        'Demon',
-        'Chief',
-        'Nerd',
-        'Sad',
-        'VillianMommy',
-        'Santa',
-        'Herbert',
-        'Timmy',
-        'Cowboy',
-        'Dandy',
-        'Daddy',
-        'Baldi',
-        'CursedDoc',
-        'Doc',
-        'Kawaii',
-        'Pirate',
-        'Brian'
-    ];
+    // shuffle example messages on page load
+    let example_messages = data.example_messages;
+    for (let i = example_messages.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [example_messages[i], example_messages[j]] = [example_messages[j], example_messages[i]];
+    }
+
+    let curr_ix = $state(0);
+    let ex_msg = $derived(example_messages[curr_ix]);
 </script>
 
 <svelte:head>
@@ -68,8 +43,13 @@
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
             Send a message with the appropriate amounts of bits, your selected voice, and then the message you want the voice to read out.
             <br/>
+            <!--{#await data.example_messages}-->
+            <!--<Textarea disabled class="text-xs md:text-sm"-->
+            <!--          placeholder="Cheer100 [brian] generation failed ha"/>-->
+            <!--{:then _}-->
             <Textarea disabled class="text-xs md:text-sm"
-                      placeholder="Cheer100 [sol] I don't do moms. Moms do me. Because I'm a subby little bottom. Shy"/>
+                      placeholder="Cheer100 {ex_msg}"/>
+            <!--{/await}-->
         </div>
         <div class="basis-1/6 md:basis-1/4"></div>
     </div>
@@ -78,7 +58,7 @@
         <h3 class="text-2xl md:text-3xl font-germania pb-2 md:pt-2 md:pb-4">GIGA Money</h3>
 
         <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row-dense gap-3 md:gap-6">
-            {#each deluxe_voices as voice}
+            {#each data.deluxe_voices as voice}
                 <div class="bg-slate-900 p-2 rounded-xl border-2 border-yellow-400">
                     <p class="text-xl md:text-2xl">{voice.name}</p>
                     <p class="text-sm md:text-base">{voice.price} bits</p>
@@ -94,7 +74,7 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 grid-flow-row-dense gap-3 md:gap-6">
-            {#each standard_voices as voice}
+            {#each data.standard_voices as voice}
                 <div class="bg-slate-900 text-base md:text-xl p-2 rounded-xl border-2 border-yellow-400">{voice}</div>
             {/each}
         </div>
