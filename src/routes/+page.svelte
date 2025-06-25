@@ -7,17 +7,9 @@
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
 
-    let {data}: PageProps = $props();
+    let { data }: PageProps = $props();
 
-    // shuffle example messages on page load
-    let example_messages = data.example_messages;
-    for (let i = example_messages.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [example_messages[i], example_messages[j]] = [example_messages[j], example_messages[i]];
-    }
-
-    let curr_ix = $state(0);
-    let ex_msg = $derived(example_messages[curr_ix]);
+    let curr_msg_ix = $state(0);
 </script>
 
 <svelte:head>
@@ -43,13 +35,13 @@
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
             Send a message with the appropriate amounts of bits, your selected voice, and then the message you want the voice to read out.
             <br/>
-            <!--{#await data.example_messages}-->
-            <!--<Textarea disabled class="text-xs md:text-sm"-->
-            <!--          placeholder="Cheer100 [brian] generation failed ha"/>-->
-            <!--{:then _}-->
+            {#await data.example_messages}
             <Textarea disabled class="text-xs md:text-sm"
-                      placeholder="Cheer100 {ex_msg}"/>
-            <!--{/await}-->
+                      placeholder="Cheer100 [brian] generation failed ha"/>
+            {:then messages}
+            <Textarea disabled class="text-xs md:text-sm"
+                      placeholder="Cheer100 {messages[curr_msg_ix]}"/>
+            {/await}
         </div>
         <div class="basis-1/6 md:basis-1/4"></div>
     </div>
