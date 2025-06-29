@@ -1,5 +1,6 @@
 
 <script lang="ts">
+    import {onMount} from "svelte";
     import {Separator} from "$lib/components/ui/separator";
     import {Textarea} from "$lib/components/ui/textarea";
     import type {PageProps} from "./$types";
@@ -10,6 +11,16 @@
     let { data }: PageProps = $props();
 
     let curr_msg_ix = $state(0);
+    let raw_opacity = $state(0);
+    let ollie_opacity = $derived(1 - Math.min(raw_opacity, 1));
+
+    onMount(() => {
+        setTimeout(() => {
+            setInterval(() => {
+                raw_opacity += 0.01;
+            }, 30000);
+        }, 300000);
+    });
 </script>
 
 <svelte:head>
@@ -35,13 +46,16 @@
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
             Send a message with the appropriate amounts of bits, your selected voice, and then the message you want the voice to read out.
             <br/>
-            {#await data.example_messages}
-            <Textarea disabled class="text-xs md:text-sm"
+            <div class="bg-bottom bg-no-repeat"
+                 style="background-image: linear-gradient(rgba(59, 7, 100, {ollie_opacity}), rgba(59, 7, 100, {ollie_opacity})), url('/ollieWide-4x.png')">
+                {#await data.example_messages}
+                <Textarea disabled class="text-xs md:text-sm"
                       placeholder="Cheer100 [brian] generation failed ha"/>
-            {:then messages}
-            <Textarea disabled class="text-xs md:text-sm"
+                {:then messages}
+                <Textarea disabled class="text-xs md:text-sm"
                       placeholder="Cheer100 {messages[curr_msg_ix]}"/>
-            {/await}
+                {/await}
+            </div>
         </div>
         <div class="basis-1/6 md:basis-1/4"></div>
     </div>
