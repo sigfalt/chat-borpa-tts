@@ -11,7 +11,7 @@
     let { data }: PageProps = $props();
 
     let curr_msg_ix = $state(0);
-    let raw_opacity = $state(0.1);
+    let raw_opacity = $state(0);
     let ollie_opacity = $derived(1 - Math.min(raw_opacity, 1));
 
     onMount(() => {
