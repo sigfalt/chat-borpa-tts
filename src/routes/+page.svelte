@@ -37,7 +37,7 @@
 </svelte:head>
 
 <div id="main" class="text-center text-white m-8 font-rowdies space-y-4">
-    <h2 class="text-3xl md:text-4xl font-germania">Hannah TTS</h2>
+    <h2 class="text-3xl md:text-4xl font-germania">{title}</h2>
 
     <div class="flex flex-row">
         <div class="basis-1/6 md:basis-1/4"></div>
