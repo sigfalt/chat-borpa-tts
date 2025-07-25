@@ -1,9 +1,13 @@
 
 <script lang="ts">
+    import IcBaselineKeyboardDoubleArrowLeft from '~icons/ic/baseline-keyboard-double-arrow-left';
+    import IcBaselineKeyboardDoubleArrowRight from '~icons/ic/baseline-keyboard-double-arrow-right';
+
     import {onMount} from "svelte";
     import {Separator} from "$lib/components/ui/separator";
     import {Textarea} from "$lib/components/ui/textarea";
     import type {PageProps} from "./$types";
+    import {Button} from "$lib/components/ui/button";
 
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
@@ -11,9 +15,23 @@
     let { data }: PageProps = $props();
 
     let curr_msg_ix = $state(0);
+    function click_left() {
+        if (curr_msg_ix > 0) {
+            curr_msg_ix -= 1;
+        } else {
+            curr_msg_ix = data.example_messages.length - 1;
+        }
+    }
+    function click_right() {
+        if (curr_msg_ix + 1 < data.example_messages.length) {
+            curr_msg_ix += 1;
+        } else {
+            curr_msg_ix = 0;
+        }
+    }
+
     let raw_opacity = $state(0);
     let ollie_opacity = $derived(1 - Math.min(raw_opacity, 1));
-
     onMount(() => {
         setInterval(() => {
             raw_opacity += 0.01;
@@ -44,6 +62,12 @@
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
             Send a message with the appropriate amounts of bits, your selected voice, and then the message you want the voice to read out.
             <br/>
+            <div class="grid grid-cols-4">
+                <Button variant="ghost" onclick={click_left} disabled={!data.example_messages}><IcBaselineKeyboardDoubleArrowLeft /></Button>
+                <div></div>
+                <div></div>
+                <Button variant="ghost" onclick={click_right} disabled={!data.example_messages}><IcBaselineKeyboardDoubleArrowRight /></Button>
+            </div>
             <div class="bg-bottom bg-no-repeat"
                  style="background-image: linear-gradient(rgba(59, 7, 100, {ollie_opacity}), rgba(59, 7, 100, {ollie_opacity})), url('/ollieWide-4x.png')">
                 {#await data.example_messages}
