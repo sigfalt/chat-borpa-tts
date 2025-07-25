@@ -85,7 +85,7 @@
     </div>
 </div>
 
-<div class="flex w-screen">
+<div class="flex w-full">
     <div class="basis-1/12"></div>
     <div class="basis-10/12"><Separator /></div>
     <div class="basis-1/12"></div>
