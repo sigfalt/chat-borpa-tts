@@ -60,7 +60,9 @@
     <div class="flex flex-row">
         <div class="basis-1/6 md:basis-1/4"></div>
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
-            Send a message with the appropriate amounts of bits, your selected voice, and then the message you want the voice to read out.
+            Send a message with the appropriate amounts of bits, your selected voice (otherwise a random voice will be chosen), and then the message you want the voice to read out.
+            <br/>
+            <span class="text-yellow-400">NEW:</span> Try out the upgraded version 3 English AI voice generation by adding "<span class="text-yellow-400">:v3</span>" to the end of the voice name.
             <br/>
             <div class="grid grid-cols-4">
                 <Button variant="ghost" onclick={click_left} disabled={!data.example_messages}><IcBaselineKeyboardDoubleArrowLeft /></Button>
