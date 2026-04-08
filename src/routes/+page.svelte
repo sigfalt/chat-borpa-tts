@@ -122,7 +122,7 @@
     <br/>
     Developed and hosted by <a class="text-yellow-400" href="https://sigfalt.dev">sigfalt</a>
     <br/>
-    TTS powered by <a class="text-yellow-400" href="https://tts.monster/">TTSMonster</a>
+    TTS powered by <a class="text-yellow-400" href="https://elevenlabs.io/">ElevenLabs</a>
     <br/>
     Source available on <a class="text-yellow-400" href="https://github.com/sigfalt/chat-borpa-tts">Github</a>
 </div>
