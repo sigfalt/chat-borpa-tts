@@ -1,10 +1,5 @@
-[{
-  "name": "DeluxePirate",
-  "price": 1000
-}, {
-  "name": "GigaDeluxePirate",
-  "price": 2000
-}, {
-  "name": "GigaDeluxePirateOFHELL",
-  "price": 2500
-}]
+[
+	{"name": "DeluxePirate", "price": 1000, "voice": ""},
+	{"name": "GigaDeluxePirate", "price": 2000, "voice": ""},
+	{"name": "GigaDeluxePirateOFHELL", "price": 2500, "voice": ""}
+]

@@ -105,7 +105,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 grid-flow-row-dense gap-3 md:gap-6">
             {#each data.standard_voices as voice}
-                <div class="bg-slate-900 text-base md:text-xl p-2 rounded-xl border-2 border-yellow-400">{voice}</div>
+                <div class="bg-slate-900 text-base md:text-xl p-2 rounded-xl border-2 border-yellow-400">{voice.name}</div>
             {/each}
         </div>
     </div>
