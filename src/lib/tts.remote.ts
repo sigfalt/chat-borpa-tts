@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import {command} from "$app/server";
+import {command, getRequestEvent} from "$app/server";
 
 const TTSSchema = v.object({
     voice_id: v.pipe(
@@ -10,9 +10,12 @@ const TTSSchema = v.object({
 });
 
 export const getVoice = command(TTSSchema, async (cmd_obj) => {
+    const { locals } = getRequestEvent();
     let { voice_id, tts_msg } = cmd_obj;
     
     // check db with voice_id
+    let voice_record = await locals.db_service.getVoice(voice_id);
+    
     // check if message and voice combo already generated and fetch from S3
     // otherwise generate sound clip with elevenlabs
     // save file to S3 bucket and store in db
