@@ -4,10 +4,14 @@
     import IcBaselineKeyboardDoubleArrowRight from '~icons/ic/baseline-keyboard-double-arrow-right';
 
     import {onMount} from "svelte";
+    import type {PageProps} from "./$types";
+    
     import {Separator} from "$lib/components/ui/separator";
     import {Textarea} from "$lib/components/ui/textarea";
-    import type {PageProps} from "./$types";
     import {Button} from "$lib/components/ui/button";
+    
+    import {getVoice} from "$lib/tts.remote";
+    let voice_id = $state(1);
 
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
@@ -60,26 +64,48 @@
     <div class="flex flex-row">
         <div class="basis-1/6 md:basis-1/4"></div>
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
-            Send a message with the appropriate amounts of bits, your selected voice (otherwise a random voice will be chosen), and then the message you want the voice to read out.
+            <p>Send a message with the appropriate amounts of bits, your selected voice (otherwise a random voice will be chosen), and then the message you want the voice to read out.</p>
             <br/>
-            <span class="text-yellow-400">NEW:</span> Try out the upgraded version 3 English AI voice generation by adding "<span class="text-yellow-400">:v3</span>" to the end of the voice name.
-            <br/>
-            <div class="grid grid-cols-4">
+            <div class="flex items-stretch">
                 <Button variant="ghost" onclick={click_left} disabled={!data.example_messages}><IcBaselineKeyboardDoubleArrowLeft /></Button>
-                <div></div>
-                <div></div>
+                <div class="bg-bottom bg-no-repeat flex-1"
+                     style="background-image: linear-gradient(rgba(59, 7, 100, {ollie_opacity}), rgba(59, 7, 100, {ollie_opacity})), url('/ollieWide-4x.png')">
+                    {#await data.example_messages}
+                    <Textarea disabled class="text-xs md:text-sm"
+                              placeholder="Cheer100 [brian] generation failed ha"/>
+                    {:then messages}
+                    <Textarea disabled class="text-xs md:text-sm"
+                              placeholder="Cheer100 {messages[curr_msg_ix]}"/>
+                    {/await}
+                </div>
                 <Button variant="ghost" onclick={click_right} disabled={!data.example_messages}><IcBaselineKeyboardDoubleArrowRight /></Button>
             </div>
-            <div class="bg-bottom bg-no-repeat"
-                 style="background-image: linear-gradient(rgba(59, 7, 100, {ollie_opacity}), rgba(59, 7, 100, {ollie_opacity})), url('/ollieWide-4x.png')">
-                {#await data.example_messages}
-                <Textarea disabled class="text-xs md:text-sm"
-                      placeholder="Cheer100 [brian] generation failed ha"/>
-                {:then messages}
-                <Textarea disabled class="text-xs md:text-sm"
-                      placeholder="Cheer100 {messages[curr_msg_ix]}"/>
-                {/await}
+        </div>
+        <div class="basis-1/6 md:basis-1/4"></div>
+    </div>
+    
+    <div class="flex flex-row">
+        <div class="basis-1/6 md:basis-1/4"></div>
+        <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
+            
+            <p><span class="text-yellow-400">NEW:</span> Test out the TTS message you're about to send! No more surprises!</p>
+            <p>Note: this is a <span class="text-yellow-400">FREE</span> gratuity being offered, no quality or speed guarantees are made.</p>
+            
+            <br/>
+            
+            <Textarea class="text-xs md:text-sm"
+            style="background-image: linear-gradient(rgb(155, 129, 176));"/>
+            
+            <div class="flex flex-row">
+                <select name="voice_name" id="voice_id" class="basis-1/4 bg-purple-950" bind:value={voice_id}>
+                    {#each data.standard_voices as voice}
+                        <option value="{voice.voice_id}">{voice.name}</option>
+                    {/each}
+                </select>
+                <div class="basis-1/2"></div>
+                <Button variant="secondary" class="basis-1/4" onclick={() => getVoice({voice_id: voice_id, tts_msg: ''})}><IcBaselineKeyboardDoubleArrowRight /></Button>
             </div>
+            
         </div>
         <div class="basis-1/6 md:basis-1/4"></div>
     </div>
@@ -126,3 +152,10 @@
     <br/>
     Source available on <a class="text-yellow-400" href="https://github.com/sigfalt/chat-borpa-tts">Github</a>
 </div>
+
+<style>
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+</style>
