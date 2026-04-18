@@ -13,7 +13,7 @@ export class VoiceDatabase {
     async getVoice(voice_id: number): Promise<Voice | null> {
         return this.db
             .prepare("SELECT * FROM voices WHERE voice_id = ? AND enabled IS TRUE")
-            .bind(voice_id, 1)
+            .bind(voice_id)
             .first();
     }
 }
