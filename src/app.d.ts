@@ -9,6 +9,7 @@ declare global {
 		interface Locals {
 			db_service: VoiceDatabase;
 			s3_service: AudioStorage;
+			tts_service: ElevenLabsClient;
 		}
 		// interface PageData {}
 		// interface PageState {}

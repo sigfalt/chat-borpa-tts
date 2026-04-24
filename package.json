@@ -44,6 +44,7 @@
 		"wrangler": "^4.83.0"
 	},
 	"dependencies": {
+		"@elevenlabs/elevenlabs-js": "^2.44.0",
 		"valibot": "^1.3.1"
 	}
 }
