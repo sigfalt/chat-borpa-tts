@@ -1,4 +1,3 @@
-import type {D1Database} from '@cloudflare/workers-types';
 
 export interface Voice {
     voice_id: number;

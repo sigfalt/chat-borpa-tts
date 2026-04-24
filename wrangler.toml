@@ -12,6 +12,10 @@ database_id = "9576e20f-233b-4251-956a-133211e283e2"
 binding = "VOICES_DB"
 database_name = "VOICES_DB"
 
+[[r2_buckets]]
+binding = "VOICES_S3"
+bucket_name = "prod-borpa-tts-generated"
+
 [env.production.vars]
 NODE_VERSION = "22.16.0"
 
@@ -19,3 +23,7 @@ NODE_VERSION = "22.16.0"
 database_id = "9576e20f-233b-4251-956a-133211e283e2"
 binding = "VOICES_DB"
 database_name = "VOICES_DB"
+
+[[env.production.r2_buckets]]
+binding = "VOICES_S3"
+bucket_name = "prod-borpa-tts-generated"
