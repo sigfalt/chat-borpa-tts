@@ -11,11 +11,13 @@
     import {Button} from "$lib/components/ui/button";
     
     import {getVoice} from "$lib/tts.remote";
+    import {SvelteMap} from "svelte/reactivity";
     let voice_id = $state(1);
 
     const host = 'tts.borpa.chat';
     const title = `Hannah TTS`;
 
+    
     let { data }: PageProps = $props();
 
     let curr_msg_ix = $state(0);
@@ -34,6 +36,11 @@
         }
     }
 
+    
+    let tts_msg = $state('');
+    let loaded_voice_data = new SvelteMap();
+
+    
     let raw_opacity = $state(0);
     let ollie_opacity = $derived(1 - Math.min(raw_opacity, 1));
     onMount(() => {
@@ -94,16 +101,29 @@
             <br/>
             
             <Textarea class="text-xs md:text-sm"
-            style="background-image: linear-gradient(rgb(155, 129, 176));"/>
+                style="background-image: linear-gradient(rgb(155, 129, 176));"
+                      bind:value={tts_msg}
+            />
             
             <div class="flex flex-row">
-                <select name="voice_name" id="voice_id" class="basis-1/4 bg-purple-950" bind:value={voice_id}>
+                <select name="voice_name" id="voice_id_dropdown" class="basis-1/4 bg-purple-950" bind:value={voice_id}>
                     {#each data.standard_voices as voice}
                         <option value="{voice.voice_id}">{voice.name}</option>
                     {/each}
                 </select>
                 <div class="basis-1/2"></div>
-                <Button variant="secondary" class="basis-1/4" onclick={() => getVoice({voice_id: voice_id, tts_msg: ''})}><IcBaselineKeyboardDoubleArrowRight /></Button>
+                <Button variant="secondary" class="basis-1/4" onclick={async () => {
+                    let audio_blob = await getVoice({voice_id: voice_id, tts_msg: tts_msg});
+                    loaded_voice_data.set({ voice_id, tts_msg }, audio_blob);
+                }}><IcBaselineKeyboardDoubleArrowRight /></Button>
+            </div>
+            
+            <div>
+                {#each loaded_voice_data as [voice_args, audio_blob]}
+                    <audio
+                            src="{URL.createObjectURL(audio_blob)}"
+                    ></audio>
+                {/each}
             </div>
             
         </div>
