@@ -6,7 +6,6 @@ import {ElevenLabsClient} from "@elevenlabs/elevenlabs-js";
 export const handle: Handle = async ({ event, resolve }) => {
     event.locals.db_service = new VoiceDatabase(event.platform!.env.VOICES_DB);
     event.locals.s3_service = new AudioStorage(event.platform!.env.VOICES_S3);
-    // todo: replace API key with injected secret
-    event.locals.tts_service = new ElevenLabsClient({ apiKey: 'xi-api-key' });
+    event.locals.tts_service = new ElevenLabsClient({ apiKey: event.platform!.env.ELEVENLABS_API_KEY });
     return resolve(event);
 }

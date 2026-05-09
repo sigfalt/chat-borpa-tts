@@ -17,6 +17,7 @@ declare global {
 			env: {
 				VOICES_DB: D1Database;
 				VOICES_S3: R2Bucket;
+				ELEVENLABS_API_KEY: string;
 			};
 			// context: {
 			// 	waitUntil(promise: Promise<any>): void;
