@@ -108,7 +108,7 @@
             <div class="flex flex-row">
                 <select name="voice_name" id="voice_id_dropdown" class="basis-1/4 bg-purple-950" bind:value={voice_id}>
                     {#each data.standard_voices as voice}
-                        <option value="{voice.voice_id}">{voice.name}</option>
+                        <option value={voice.voice_id}>{voice.name}</option>
                     {/each}
                 </select>
                 <div class="basis-1/2"></div>
