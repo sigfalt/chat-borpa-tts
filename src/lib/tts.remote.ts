@@ -23,7 +23,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     }
     
     // check if message and voice combo already generated
-    const audio_record = await locals.db_service.searchAudioFile(voice_record.voice_id, tts_msg);
+    const audio_record = await locals.db_service.searchAudioFile(voice_record!.voice_id, tts_msg);
     console.log(`Audio record: ${JSON.stringify(audio_record)}`);
     
     let audio_blob;
@@ -40,7 +40,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     } else {
         // otherwise generate new audio with elevenlabs
         const audio_stream = await locals.tts_service.textToSpeech.convert(
-            voice_record.voice_id, {
+            voice_record!.elevenlabs_id, {
                 text: tts_msg,
                 modelId: 'eleven_v3',
                 // default outputFormat is mp3_44100_128, other values may be plan tier locked
