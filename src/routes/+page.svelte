@@ -10,7 +10,7 @@
     import {Textarea} from "$lib/components/ui/textarea";
     import {Button} from "$lib/components/ui/button";
     
-    import {getVoice} from "$lib/tts.remote";
+    import {getVoice} from "./tts.remote";
     import {SvelteMap} from "svelte/reactivity";
     let voice_id = $state(1);
 
