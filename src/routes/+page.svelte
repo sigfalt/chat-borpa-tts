@@ -10,8 +10,8 @@
     import {Textarea} from "$lib/components/ui/textarea";
     import {Button} from "$lib/components/ui/button";
     
-    import {getVoice} from "./tts.remote";
     import {SvelteMap} from "svelte/reactivity";
+    import {error} from "@sveltejs/kit";
     let voice_id = $state(1);
 
     const host = 'tts.borpa.chat';
@@ -113,7 +113,13 @@
                 </select>
                 <div class="basis-1/2"></div>
                 <Button variant="secondary" class="basis-1/4" onclick={async () => {
-                    let audio_blob = await getVoice({voice_id: voice_id, tts_msg: tts_msg});
+                    const response = await fetch('/tts', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ voice_id: voice_id, tts_msg: tts_msg }),
+                    });
+                    if (!response.ok) error(response.status, await response.text());
+                    const audio_blob = await response.blob();
                     loaded_voice_data.set({ voice_id, tts_msg }, audio_blob);
                 }}><IcBaselineKeyboardDoubleArrowRight /></Button>
             </div>
