@@ -26,7 +26,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     const audio_record = await locals.db_service.searchAudioFile(voice_record!.voice_id, tts_msg);
     console.log(`Audio record: ${JSON.stringify(audio_record)}`);
     
-    let response_blob;
+    let response_stream;
     if (audio_record) {
         // fetch pregenerated audio from s3
         const s3_path = audio_record.s3_path;
@@ -36,9 +36,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
             error(500, 'Pregenerated audio file not found.');
         }
         await locals.db_service.incrementAudioFetchCount(audio_record.audio_id);
-        response_blob = await new Response(fetched_stream, {
-            headers: { 'Content-Type': 'audio/mpeg' },
-        }).blob();
+        response_stream = fetched_stream;
     } else {
         // otherwise generate new audio with elevenlabs
         const audio_stream = await locals.tts_service.textToSpeech.convert(
@@ -58,11 +56,9 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
             console.warn(`Failed to store audio blob for UUID {s3_path}`);
         }
         // even if blob storage failed, return generated audio to user
-        response_blob = await new Response(audio_stream, {
-            headers: { 'Content-Type': 'audio/mpeg' },
-        }).blob();
+        response_stream = audio_stream;
     }
     
     // return voice clip
-    return response_blob;
+    return response_stream;
 });
