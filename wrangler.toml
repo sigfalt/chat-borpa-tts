@@ -6,6 +6,9 @@ compatibility_date = "2025-09-15"
 
 [vars]
 NODE_VERSION = "22.16.0"
+PUBLIC_S3_URL = "https://ab97330f87977c5046c3dd7924c110f8.r2.cloudflarestorage.com"
+PUBLIC_S3_BUCKET_NAME = "prod-borpa-tts-generated"
+PUBLIC_S3_ACCESS_ID = "af900df52c6f1ff3e27245d626dd97f8"
 
 [[d1_databases]]
 database_id = "9576e20f-233b-4251-956a-133211e283e2"

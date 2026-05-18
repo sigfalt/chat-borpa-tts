@@ -38,7 +38,7 @@
 
     
     let tts_msg = $state('');
-    let loaded_voice_data = new SvelteMap();
+    let loaded_voice_data = new SvelteMap<any, string>();
 
     
     let raw_opacity = $state(0);
@@ -113,15 +113,16 @@
                 </select>
                 <div class="basis-1/2"></div>
                 <Button variant="secondary" class="basis-1/4" onclick={async () => {
-                    let audio_blob = await getVoice({voice_id: voice_id, tts_msg: tts_msg});
-                    loaded_voice_data.set({ voice_id, tts_msg }, audio_blob);
+                    const params = {voice_id, tts_msg};
+                    const audio_s3_key = await getVoice(params);
+                    loaded_voice_data.set(params, audio_s3_key);
                 }}><IcBaselineKeyboardDoubleArrowRight /></Button>
             </div>
             
             <div>
-                {#each loaded_voice_data as [voice_args, audio_blob]}
+                {#each loaded_voice_data as [_, audio_s3_key]}
                     <audio
-                            src="{URL.createObjectURL(audio_blob)}"
+                            src="{audio_s3_key}"
                     ></audio>
                 {/each}
             </div>
