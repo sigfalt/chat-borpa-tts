@@ -32,7 +32,9 @@ export class AudioStorage {
     }
     
     async put(key: string, value: Blob): Promise<boolean> {
-        const val = await this.storage.put(key, value);
+        const val = await this.storage.put(key, value, {
+            httpMetadata: { contentType: 'audio/mpeg' }
+        });
         return val != null;
     }
     
