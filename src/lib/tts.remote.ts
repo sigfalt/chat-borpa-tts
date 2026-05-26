@@ -62,5 +62,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     }
     
     // return voice clip
-    return response;
+    return {
+        url: response
+    };
 });

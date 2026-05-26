@@ -114,16 +114,15 @@
                 <div class="basis-1/2"></div>
                 <Button variant="secondary" class="basis-1/4" onclick={async () => {
                     const params = {voice_id, tts_msg};
-                    const audio_s3_key = await getVoice(params);
-                    loaded_voice_data.set(params, audio_s3_key);
+                    const voice_response = await getVoice(params);
+                    loaded_voice_data.set(params, voice_response.url);
                 }}><IcBaselineKeyboardDoubleArrowRight /></Button>
             </div>
             
-            <div>
-                {#each loaded_voice_data as [_, audio_s3_key]}
-                    <audio
-                            src="{audio_s3_key}"
-                    ></audio>
+            <div class="grid grid-cols-2 items-center">
+                {#each loaded_voice_data as [key, audio_s3_key]}
+                    <div>{key.tts_msg}</div>
+                    <audio class="w-full" controls src="{audio_s3_key}"></audio>
                 {/each}
             </div>
             
@@ -173,6 +172,7 @@
     <br/>
     Source available on <a class="text-yellow-400" href="https://github.com/sigfalt/chat-borpa-tts">Github</a>
 </div>
+
 
 <style>
   select,
