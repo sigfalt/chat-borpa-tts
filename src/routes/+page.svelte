@@ -12,6 +12,7 @@
     
     import {getVoice} from "$lib/tts.remote";
     import {SvelteMap} from "svelte/reactivity";
+	import AudioPlayer from '$lib/components/player/AudioPlayer.svelte';
     let voice_id = $state(1);
 
     const host = 'tts.borpa.chat';
@@ -122,7 +123,7 @@
             <div class="grid grid-cols-2 items-center">
                 {#each loaded_voice_data as [key, audio_s3_key]}
                     <div>{key.tts_msg}</div>
-                    <audio class="w-full" controls src="{audio_s3_key}"></audio>
+                    <AudioPlayer src={audio_s3_key} label={key.tts_msg} />
                 {/each}
             </div>
             
