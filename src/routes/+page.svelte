@@ -5,10 +5,11 @@
 
     import {onMount} from "svelte";
     import type {PageProps} from "./$types";
-    
+
+    import {Button} from "$lib/components/ui/button";
+    import {Input} from "$lib/components/ui/input";
     import {Separator} from "$lib/components/ui/separator";
     import {Textarea} from "$lib/components/ui/textarea";
-    import {Button} from "$lib/components/ui/button";
     
     import {getVoice} from "$lib/tts.remote";
     import {SvelteMap} from "svelte/reactivity";
@@ -38,6 +39,8 @@
     }
 
     
+    let tts_unlocked = $state(false);
+    let access_key = $state('');
     let tts_msg = $state('');
     let loaded_voice_data = new SvelteMap<any, string>();
 
@@ -91,42 +94,53 @@
         </div>
         <div class="basis-1/6 md:basis-1/4"></div>
     </div>
-    
+
     <div class="flex flex-row">
         <div class="basis-1/6 md:basis-1/4"></div>
         <div class="bg-purple-950 basis-2/3 md:basis-1/2 justify-center items-center p-2 rounded-xl border-2 border-yellow-400 text-sm">
-            
+
             <p><span class="text-yellow-400">NEW:</span> Test out the TTS message you're about to send! No more surprises!</p>
             <p>Note: this is a <span class="text-yellow-400">FREE</span> gratuity being offered, no quality or speed guarantees are made.</p>
-            
+
             <br/>
-            
-            <Textarea class="text-xs md:text-sm"
-                style="background-image: linear-gradient(rgb(155, 129, 176));"
-                      bind:value={tts_msg}
-            />
-            
-            <div class="flex flex-row">
-                <select name="voice_name" id="voice_id_dropdown" class="basis-1/4 bg-purple-950" bind:value={voice_id}>
-                    {#each data.standard_voices as voice}
-                        <option value={voice.voice_id}>{voice.name}</option>
+
+            {#if !tts_unlocked}
+                <div class="flex flex-row">
+                    <Input type="text" placeholder="Enter Access Key..." class="bg-purple-950 placeholder:text-gray-400"
+                           bind:value={access_key}
+                    />
+                    <Button variant="secondary" onclick={async () => {
+                        console.log(access_key);
+                    }}><IcBaselineKeyboardDoubleArrowRight /></Button>
+                </div>
+            {:else}
+                <Textarea class="text-xs md:text-sm"
+                          style="background-image: linear-gradient(rgb(155, 129, 176));"
+                          bind:value={tts_msg}
+                />
+
+                <div class="flex flex-row">
+                    <select name="voice_name" id="voice_id_dropdown" class="basis-1/4 bg-purple-950" bind:value={voice_id}>
+                        {#each data.standard_voices as voice}
+                            <option value={voice.voice_id}>{voice.name}</option>
+                        {/each}
+                    </select>
+                    <div class="basis-1/2"></div>
+                    <Button variant="secondary" class="basis-1/4" onclick={async () => {
+                        const params = {voice_id, tts_msg};
+                        const voice_response = await getVoice(params);
+                        loaded_voice_data.set(params, voice_response.url);
+                    }}><IcBaselineKeyboardDoubleArrowRight /></Button>
+                </div>
+
+                <div class="grid grid-cols-2 items-center">
+                    {#each loaded_voice_data as [key, audio_s3_key]}
+                        <div>{key.tts_msg}</div>
+                        <AudioPlayer src={audio_s3_key} label={key.tts_msg} />
                     {/each}
-                </select>
-                <div class="basis-1/2"></div>
-                <Button variant="secondary" class="basis-1/4" onclick={async () => {
-                    const params = {voice_id, tts_msg};
-                    const voice_response = await getVoice(params);
-                    loaded_voice_data.set(params, voice_response.url);
-                }}><IcBaselineKeyboardDoubleArrowRight /></Button>
-            </div>
-            
-            <div class="grid grid-cols-2 items-center">
-                {#each loaded_voice_data as [key, audio_s3_key]}
-                    <div>{key.tts_msg}</div>
-                    <AudioPlayer src={audio_s3_key} label={key.tts_msg} />
-                {/each}
-            </div>
-            
+                </div>
+            {/if}
+
         </div>
         <div class="basis-1/6 md:basis-1/4"></div>
     </div>
