@@ -17,7 +17,7 @@ export const unlock = command(UnlockSchema, async (cmd_obj) => {
     const token_hash = createHash('sha256').update(token).digest('hex');
     const auth_token = await locals.db_service.searchAuthToken(token_hash);
     if (!auth_token) {
-        return fail(401, 'Invalid auth token.');
+        return fail(401, {msg: 'Invalid auth token.'});
     }
     
     cookies.set(AUTH_COOKIE_NAME, createSession(auth_token.id.toString()), {
@@ -47,7 +47,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     const voice_record = await locals.db_service.getVoice(voice_id);
     console.log(`Voice record: ${JSON.stringify(voice_record)}`);
     if (!voice_record) {
-        console.warn(`Invalid voice ID provided {voice_id}`);
+        console.warn(`Invalid voice ID provided ${voice_id}`);
         return fail(400, 'Invalid voice provided.');
     }
     
@@ -83,7 +83,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
         const audio_stored = await locals.s3_service.put(s3_path, audio_stream);
         
         if (!audio_stored) {
-            console.error(`Failed to store audio blob for UUID {s3_path}`);
+            console.error(`Failed to store audio blob for UUID ${s3_path}`);
             error(500, 'Internal server error. [ERR5811]');
         }
         
