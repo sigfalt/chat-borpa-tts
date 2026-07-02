@@ -2,7 +2,6 @@ import * as v from 'valibot';
 import {command, getRequestEvent} from "$app/server";
 import {error, fail} from "@sveltejs/kit";
 
-import {DEV_LOCAL} from '$env/static/private';
 import {createHash} from "node:crypto";
 import {AUTH_COOKIE_NAME, createSession, DEFAULT_TTL} from "$lib/auth";
 
@@ -17,7 +16,7 @@ export const unlock = command(UnlockSchema, async (cmd_obj) => {
     const token_hash = createHash('sha256').update(token).digest('hex');
     const auth_token = await locals.db_service.searchAuthToken(token_hash);
     if (!auth_token) {
-        return fail(401, {msg: 'Invalid auth token.'});
+        error(401, 'Invalid auth token.');
     }
     
     cookies.set(AUTH_COOKIE_NAME, createSession(auth_token.id.toString()), {
@@ -48,7 +47,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     console.log(`Voice record: ${JSON.stringify(voice_record)}`);
     if (!voice_record) {
         console.warn(`Invalid voice ID provided ${voice_id}`);
-        return fail(400, 'Invalid voice provided.');
+        error(400, 'Invalid voice provided.');
     }
     
     // check if message and voice combo already generated
