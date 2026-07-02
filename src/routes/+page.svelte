@@ -11,7 +11,7 @@
     import {Separator} from "$lib/components/ui/separator";
     import {Textarea} from "$lib/components/ui/textarea";
     
-    import {getVoice} from "$lib/tts.remote";
+    import {getVoice, unlock} from "$lib/tts.remote";
     import {SvelteMap} from "svelte/reactivity";
 	import AudioPlayer from '$lib/components/player/AudioPlayer.svelte';
     let voice_id = $state(1);
@@ -111,6 +111,7 @@
                     />
                     <Button variant="secondary" onclick={async () => {
                         console.log(access_key);
+                        unlock({token: access_key});
                     }}><IcBaselineKeyboardDoubleArrowRight /></Button>
                 </div>
             {:else}

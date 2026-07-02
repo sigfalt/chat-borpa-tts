@@ -15,6 +15,13 @@ export interface AudioFile {
     req_timestamp: string;
 }
 
+export interface AuthToken {
+    id: number;
+    hash: string;
+    description: string;
+    access_level: number;
+}
+
 export class VoiceDatabase {
     constructor(private readonly db: D1Database) {}
     
@@ -45,5 +52,12 @@ export class VoiceDatabase {
             .prepare("UPDATE audio_files SET fetch_count = fetch_count + 1 WHERE audio_id = ?")
             .bind(audio_id)
             .run();
+    }
+    
+    async searchAuthToken(hash: string): Promise<AuthToken | null> {
+        return await this.db
+            .prepare("SELECT * FROM auth_tokens WHERE hash = ?")
+            .bind(hash)
+            .first();
     }
 }

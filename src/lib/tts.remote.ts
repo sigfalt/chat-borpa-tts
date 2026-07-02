@@ -1,6 +1,34 @@
 import * as v from 'valibot';
 import {command, getRequestEvent} from "$app/server";
-import {error} from "@sveltejs/kit";
+import {error, fail} from "@sveltejs/kit";
+
+import {DEV_LOCAL} from '$env/static/private';
+import {createHash} from "node:crypto";
+import {AUTH_COOKIE_NAME, createSession, DEFAULT_TTL} from "$lib/auth";
+
+const UnlockSchema = v.object({
+    token: v.string(),
+});
+
+export const unlock = command(UnlockSchema, async (cmd_obj) => {
+    const { locals, cookies } = getRequestEvent();
+    
+    const { token } = cmd_obj;
+    const token_hash = createHash('sha256').update(token).digest('hex');
+    const auth_token = await locals.db_service.searchAuthToken(token_hash);
+    if (!auth_token) {
+        return fail(401, 'Invalid auth token.');
+    }
+    
+    cookies.set(AUTH_COOKIE_NAME, createSession(auth_token.id.toString()), {
+        httpOnly: true,
+        maxAge: DEFAULT_TTL,
+        path: '/',
+        secure: true,
+        sameSite: true,
+    });
+});
+
 
 const TTSSchema = v.object({
     voice_id: v.pipe(
@@ -19,7 +47,8 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
     const voice_record = await locals.db_service.getVoice(voice_id);
     console.log(`Voice record: ${JSON.stringify(voice_record)}`);
     if (!voice_record) {
-        error(400, 'Invalid voice provided.');
+        console.warn(`Invalid voice ID provided {voice_id}`);
+        return fail(400, 'Invalid voice provided.');
     }
     
     // check if message and voice combo already generated
@@ -33,7 +62,8 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
         const fetched_stream = await locals.s3_service.get(s3_path);
         
         if (!fetched_stream) {
-            error(500, 'Pregenerated audio file not found.');
+            console.error(`Failed to fetch audio blob for UUID {s3_path}`);
+            error(500, 'Internal server error. [ERR6754]');
         }
         
         await locals.db_service.incrementAudioFetchCount(audio_record.audio_id);
@@ -54,7 +84,7 @@ export const getVoice = command(TTSSchema, async (cmd_obj) => {
         
         if (!audio_stored) {
             console.error(`Failed to store audio blob for UUID {s3_path}`);
-            error(500);
+            error(500, 'Internal server error. [ERR5811]');
         }
         
         await locals.db_service.insertNewAudio(voice_record.voice_id, tts_msg, s3_path);
